@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 /**
  *
  * @author Lenovo
@@ -22,8 +23,11 @@ public class AddRegularly extends javax.swing.JFrame {
     protected ArrayList<String> doRegularly = new ArrayList<String>();
     protected ArrayList<String> timeRegularly = new ArrayList<String>();
     protected ArrayList<String> dayRegularly = new ArrayList<String>();
-    protected int indexRegularly;
+    protected int indexRegularly, indexSometime;
     final protected String fileRegularlyAddress = "D:\\\\regularlydata.txt";
+    
+    protected int testSometimeFile;
+    protected JLabel msg;
     /**
      * Creates new form AddRegularly
      */
@@ -194,20 +198,63 @@ public class AddRegularly extends javax.swing.JFrame {
             String timeRoutine = time.getText().trim();
             String dayRoutine = day.getSelectedItem().toString();
             
-            Check testRegulatly = new Check();
-            int testResultSometime = testRegulatly.CheckwhattodoRegularly(timeRoutine, dayRoutine);
-            doRegularly = testRegulatly.getWhatToDo();
-            indexRegularly = testRegulatly.getIndex();
-            if (testResultSometime == 0){
+            Check test = new Check();
+            int testResultSometime = test.CheckwhattodoRegularly(timeRoutine, dayRoutine);
+            doRegularly = test.getWhatToDo();
+            indexRegularly = test.getIndex();
+            
+            test.setFileName("D:\\\\sometimedata.txt");
+            test.fileToArray();
+            ArrayList<String> doSometime = new ArrayList<String>();
+            ArrayList<String> dateSometime = new ArrayList<String>();
+            ArrayList<String> timeSometime = new ArrayList<String>();
+            doSometime = test.getWhatToDo();
+            dateSometime = test.getDateToDo();
+            timeSometime = test.getTimeToDo();
+         /*   System.out.println(Arrays.toString(doSometime.toArray()));
+            System.out.println(Arrays.toString(dateSometime.toArray()));
+            System.out.println(Arrays.toString(timeSometime.toArray()));*/
+            FindDay daySometime;
+            for (int i =0; i < dateSometime.size(); i++){
+                 daySometime = new FindDay(dateSometime.get(i));
+                 if (timeRoutine.equalsIgnoreCase(timeSometime.get(i))){
+                     if (dayRoutine.equalsIgnoreCase(daySometime.findDayOfWeek())){
+                         testSometimeFile = 0;
+                         indexSometime = i;
+                         break;
+                      } else {
+                         testSometimeFile = 1;
+                      }
+                 }
+                      
+            }
+            if (testResultSometime == 0 || testSometimeFile == 0 ){
+                 time.setText("");
+                if (testResultSometime == 0){
+                    msg = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
+                    msg.setFont(new Font("tahoma",Font.PLAIN, 20));
+                }
+                else if (testSometimeFile == 0){
+                    msg = new JLabel("There is something to do: \n " + doSometime.get(indexSometime));
+                    msg.setFont(new Font("tahoma",Font.PLAIN, 20));
+                }       
+                JOptionPane.showMessageDialog(null,msg); 
+            } else{
+                String somtimedata = DataSometime(regularly, timeRoutine, dayRoutine);
+                saveRoutineToFile(somtimedata);
+            }
+            
+            
+          /*  if (testResultSometime == 0){
                 routine.setText("");
                 time.setText("");
-                JLabel label = new JLabel(doRegularly.get(indexRegularly));
+                JLabel label = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
                 label.setFont(new Font("tahoma",Font.PLAIN, 20));
                 JOptionPane.showMessageDialog(null,label); 
             } else{
                 String somtimedata = DataSometime(regularly, timeRoutine, dayRoutine);
                 saveRoutineToFile(somtimedata);
-            }
+            }*/
         }  
     }//GEN-LAST:event_jButton1ActionPerformed
     public String DataSometime(String event, String time, String data) {

@@ -214,11 +214,11 @@ public class AddSometime extends javax.swing.JFrame {
                  time.setText("");
                  date.setText("");
                 if (testResultSometime == 0){
-                    msg = new JLabel(doSometime.get(indexSometime));
+                    msg = new JLabel("There is something to do:  \n" + doSometime.get(indexSometime));
                     msg.setFont(new Font("tahoma",Font.PLAIN, 20));
                 }
                 else if(testResultRegularly == 0){
-                    msg = new JLabel(doRegularly.get(indexregularly));
+                    msg = new JLabel("There is something to do:  \n" + doRegularly.get(indexregularly));
                     msg.setFont(new Font("tahoma",Font.PLAIN, 20));
                 }
                 JOptionPane.showMessageDialog(null, msg); 

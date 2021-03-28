@@ -17,9 +17,9 @@ import javax.swing.JOptionPane;
  */
 public class Check {
     private String fileName;
-    private ArrayList<String> whatToDo = new ArrayList<String>();
-    private ArrayList<String> timeToDo = new ArrayList<String>();
-    private ArrayList<String> dateOrDayToDo = new ArrayList<String>();
+    private ArrayList<String> whatToDo;
+    private ArrayList<String> timeToDo;
+    private ArrayList<String> dateOrDayToDo;
     private int index;
 
     public ArrayList<String> getWhatToDo() {
@@ -37,8 +37,15 @@ public class Check {
     public int getIndex() {
         return index;
     }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
    
     public void fileToArray(){
+         whatToDo = new ArrayList<String>();
+         timeToDo = new ArrayList<String>();
+         dateOrDayToDo = new ArrayList<String>();
         try {
             File dataSomeTime = new File(fileName); // "D:\\\\sometimedata.txt"
             Scanner dataReader = new Scanner(dataSomeTime);
