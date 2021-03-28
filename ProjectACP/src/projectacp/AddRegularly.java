@@ -31,13 +31,6 @@ public class AddRegularly extends javax.swing.JFrame {
         initComponents();
         routine.setFont(new Font("tahoma",Font.PLAIN, 16));
         time.setFont(new Font("tahoma",Font.PLAIN, 16));
-        try{
-            File check = new File(fileRegularlyAddress);
-            if (check.exists() == false){
-                check.createNewFile();
-            }
-        } catch (IOException e) {
-        }
     }
     private void saveRoutineToFile(String a){
          try{

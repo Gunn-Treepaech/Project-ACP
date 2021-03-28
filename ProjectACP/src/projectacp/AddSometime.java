@@ -32,13 +32,6 @@ public class AddSometime extends javax.swing.JFrame {
         event.setFont(new Font("tahoma",Font.PLAIN, 16));
         date.setFont(new Font("tahoma",Font.PLAIN, 16));
         time.setFont(new Font("tahoma",Font.PLAIN, 16));
-        try{
-             File check = new File(fileSometimeAddress);
-            if (check.exists() == false){
-                check.createNewFile();
-            }
-        } catch (IOException e) {
-        }
     }
     public void saveDataToFile(String a){
         try{

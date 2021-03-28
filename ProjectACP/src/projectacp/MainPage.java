@@ -5,6 +5,9 @@
  */
 package projectacp;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  *
  * @author Lenovo
@@ -15,6 +18,18 @@ public class MainPage extends javax.swing.JFrame {
      * Creates new form MainPage
      */
     public MainPage() {
+         try{
+             File check = new File("D:\\\\sometimedata.txt");
+            if (check.exists() == false){
+                check.createNewFile();
+            }
+        } catch (IOException e) {}
+         try{
+             File check = new File("D:\\\\regularlydata.txt");
+            if (check.exists() == false){
+                check.createNewFile();
+            }
+        } catch (IOException e) {}
         initComponents();
     }
 
