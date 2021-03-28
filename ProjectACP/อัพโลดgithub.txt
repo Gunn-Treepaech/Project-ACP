@@ -1,3 +1,0 @@
-﻿git add .
-git commit -m “add labx”
-git push
