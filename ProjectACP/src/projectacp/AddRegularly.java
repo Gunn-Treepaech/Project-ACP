@@ -215,6 +215,7 @@ public class AddRegularly extends javax.swing.JFrame {
             System.out.println(Arrays.toString(dateSometime.toArray()));
             System.out.println(Arrays.toString(timeSometime.toArray()));*/
             FindDay daySometime;
+            testSometimeFile = 1;
             for (int i =0; i < dateSometime.size(); i++){
                  daySometime = new FindDay(dateSometime.get(i));
                  if (timeRoutine.equalsIgnoreCase(timeSometime.get(i))){
@@ -222,9 +223,7 @@ public class AddRegularly extends javax.swing.JFrame {
                          testSometimeFile = 0;
                          indexSometime = i;
                          break;
-                      } else {
-                         testSometimeFile = 1;
-                      }
+                      } 
                  }
                       
             }
