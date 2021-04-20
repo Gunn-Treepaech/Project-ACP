@@ -84,18 +84,24 @@ public class Check {
     public int CheckwhattodoRegularly(String checkTime, String checkDay){
          this.fileName =  "D:\\\\regularlydata.txt";
          fileToArray();
+     //    System.out.println(checkDay);
          int checkTimeAndDayRegularly = 1;
-         for (int i = 0; i < timeToDo.size(); i++){
-            if (checkTime.equalsIgnoreCase(timeToDo.get(i))){
-                String dayRegulatly = dateOrDayToDo.get(i) ;
-                if (checkDay.equalsIgnoreCase(dayRegulatly)){
-                    checkTimeAndDayRegularly = 0;
-                    index = i;
-                } else {
-                    checkTimeAndDayRegularly = 1;
-                }
-            }
-        }
+         for(int j = 0;  j < dateOrDayToDo.size(); j++){
+              if (checkTime.equalsIgnoreCase(timeToDo.get(j))){
+                   String[] day = dateOrDayToDo.get(j).split(",");
+                   for (int i = 0; i < day.length; i++){
+                       String dayRegulatly =day[i];
+                       System.out.println(dayRegulatly);
+                        if (checkDay.equalsIgnoreCase(dayRegulatly)){
+                            checkTimeAndDayRegularly = 0;
+                            index = j;
+                            break;
+                        } else {
+                            checkTimeAndDayRegularly = 1;
+                        }
+                   } 
+              }
+         }
          return checkTimeAndDayRegularly;
     }
 }

@@ -10,6 +10,9 @@ import java.io.*;
 import javax.swing.*;
 import java.nio.charset.*;
 import java.nio.file.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -39,9 +42,6 @@ public class AddSometime extends javax.swing.JFrame {
             BufferedWriter outputData = Files.newBufferedWriter(file,StandardCharsets.UTF_8, StandardOpenOption.APPEND);
             outputData.write(a);
             outputData.close();
-            event.setText("");
-            time.setText("");
-            date.setText("");
             JOptionPane.showMessageDialog(null,"Comple");
         }
         catch(IOException e){
@@ -74,7 +74,7 @@ public class AddSometime extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Sometime");
 
-        jPanel1.setBackground(new java.awt.Color(51, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setText("Add your event");
@@ -96,7 +96,15 @@ public class AddSometime extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
+        event.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        time.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        date.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setText("save");
+        jButton2.setFocusPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -117,10 +125,12 @@ public class AddSometime extends javax.swing.JFrame {
         jLabel4.setToolTipText("");
 
         jLabel5.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel5.setText("( *E.g 13/12/2020 )");
+        jLabel5.setText("( *E.g 20/06/2020 )");
         jLabel5.setToolTipText("");
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setText("cancel");
+        jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -198,10 +208,21 @@ public class AddSometime extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       
         if (event.getText().isEmpty() || time.getText().isEmpty() || date.getText().isEmpty()){ 
             JOptionPane.showMessageDialog(null,"Please Enter Data");
-        } else {
+        } else{
+             try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dateFormatter = LocalDate.parse(date.getText().trim(), formatter);
+                ChackSaveToFile();
+            } catch (DateTimeException e) {
+                String msg = "Please enter date in the format dd/MM/yyyy such as 20/06/2020";
+                JOptionPane.showMessageDialog(null, msg);
+            }
+        } 
+    }//GEN-LAST:event_jButton2ActionPerformed
+    
+     public void ChackSaveToFile(){
             String dataEvent = event.getText().trim();
             String dataTime = time.getText().trim();
             String dataDate = date.getText().trim();
@@ -212,7 +233,7 @@ public class AddSometime extends javax.swing.JFrame {
             indexSometime = testResult.getIndex();
             FindDay ojectFindDay = new FindDay(dataDate);
             String day = ojectFindDay.findDayOfWeek();
-           // System.out.println(day);
+            
             int testResultRegularly = testResult.CheckwhattodoRegularly(dataTime, day);
             doRegularly = testResult.getWhatToDo();
             indexregularly = testResult.getIndex();
@@ -232,11 +253,9 @@ public class AddSometime extends javax.swing.JFrame {
                 String somtimedata = DataSometime(dataEvent, dataTime, dataDate);
                 saveDataToFile(somtimedata);
             }
-        }  
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+     } 
+    
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         event.setText("");
         time.setText("");
         date.setText("");

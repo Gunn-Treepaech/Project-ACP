@@ -5,7 +5,9 @@
  */
 package projectacp;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -20,10 +22,16 @@ import java.util.Arrays;
  * @author Lenovo
  */
 public class AddRegularly extends javax.swing.JFrame {
-    protected ArrayList<String> doRegularly = new ArrayList<String>();
-    protected ArrayList<String> timeRegularly = new ArrayList<String>();
-    protected ArrayList<String> dayRegularly = new ArrayList<String>();
+    protected  ArrayList<String> doRegularly = new ArrayList<String>();
+    protected  ArrayList<String> timeRegularly = new ArrayList<String>();
+    protected  ArrayList<String> dayRegularly = new ArrayList<String>();
+    protected  ArrayList<String> userSelec;
     protected int indexRegularly, indexSometime;
+    protected  ArrayList<String> doSometime = new ArrayList<String>();
+    protected  ArrayList<String> dateSometime = new ArrayList<String>();
+    protected  ArrayList<String> timeSometime = new ArrayList<String>();
+    protected   FindDay daySometime;
+    protected  int testResultRegularly;
     final protected String fileRegularlyAddress = "D:\\\\regularlydata.txt";
     
     protected int testSometimeFile;
@@ -36,14 +44,13 @@ public class AddRegularly extends javax.swing.JFrame {
         routine.setFont(new Font("tahoma",Font.PLAIN, 16));
         time.setFont(new Font("tahoma",Font.PLAIN, 16));
     }
+    
     private void saveRoutineToFile(String a){
          try{
             Path file = Paths.get(fileRegularlyAddress);
             BufferedWriter outputData = Files.newBufferedWriter(file,StandardCharsets.UTF_8, StandardOpenOption.APPEND);
             outputData.write(a);
             outputData.close();
-            routine.setText("");
-            time.setText("");
             JOptionPane.showMessageDialog(null,"Comple");
         }
         catch(IOException e){
@@ -68,14 +75,15 @@ public class AddRegularly extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        day = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        dayList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Routine");
 
-        jPanel1.setBackground(new java.awt.Color(51, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Add your routine");
@@ -87,7 +95,7 @@ public class AddRegularly extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(424, Short.MAX_VALUE))
+                .addContainerGap(463, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +105,14 @@ public class AddRegularly extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        routine.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        routine.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        time.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setText("save");
+        jButton1.setFocusPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -113,18 +128,25 @@ public class AddRegularly extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("TH NiramitIT๙", 1, 24)); // NOI18N
         jLabel3.setText("*Day");
 
-        day.setFont(new java.awt.Font("TH NiramitIT๙ ", 1, 18)); // NOI18N
-        day.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
-
         jLabel4.setForeground(new java.awt.Color(255, 0, 51));
         jLabel4.setText("( *E.g 13.10 )");
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setText("cancel");
+        jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        dayList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        dayList.setSelectionBackground(new java.awt.Color(51, 255, 255));
+        jScrollPane1.setViewportView(dayList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,14 +154,14 @@ public class AddRegularly extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
                                 .addComponent(routine, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(68, 68, 68)
+                                .addGap(67, 67, 67)
                                 .addComponent(jLabel1)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -151,19 +173,17 @@ public class AddRegularly extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addGap(8, 8, 8)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(81, 81, 81)
-                                .addComponent(jLabel3))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(215, 215, 215)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(51, 51, 51)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,25 +191,22 @@ public class AddRegularly extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(routine, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(day, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -197,45 +214,51 @@ public class AddRegularly extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (routine.getText().isEmpty() || time.getText().isEmpty()){
+        
+   /*     userSelec = (ArrayList<String>) dayList.getSelectedValuesList();
+        System.out.println(Arrays.toString(userSelec.toArray()));
+        System.out.println(userSelec.get(0));*/
+        
+        if (routine.getText().isEmpty() || time.getText().isEmpty() || dayList.getSelectedValuesList().isEmpty()){
             JOptionPane.showMessageDialog(null,"Plaese Enter Data");
         } else {
             String regularly = routine.getText().trim();
             String timeRoutine = time.getText().trim();
-            String dayRoutine = day.getSelectedItem().toString();
+            ArrayList<String> dayRoutine = (ArrayList<String>) dayList.getSelectedValuesList(); //day.getSelectedItem().toString();
             
             Check test = new Check();
-            int testResultSometime = test.CheckwhattodoRegularly(timeRoutine, dayRoutine);
-            doRegularly = test.getWhatToDo();
-            indexRegularly = test.getIndex();
-            
+            for (int c = 0;  c < dayRoutine.size(); c++){
+                 testResultRegularly = test.CheckwhattodoRegularly(timeRoutine, dayRoutine.get(c));
+                 if (testResultRegularly == 0){
+                      doRegularly = test.getWhatToDo();
+                      indexRegularly = test.getIndex();
+                     break;
+                 }
+            }
+          
             test.setFileName("D:\\\\sometimedata.txt");
             test.fileToArray();
-            ArrayList<String> doSometime = new ArrayList<String>();
-            ArrayList<String> dateSometime = new ArrayList<String>();
-            ArrayList<String> timeSometime = new ArrayList<String>();
             doSometime = test.getWhatToDo();
             dateSometime = test.getDateToDo();
             timeSometime = test.getTimeToDo();
-         /*   System.out.println(Arrays.toString(doSometime.toArray()));
-            System.out.println(Arrays.toString(dateSometime.toArray()));
-            System.out.println(Arrays.toString(timeSometime.toArray()));*/
-            FindDay daySometime;
+
             testSometimeFile = 1;
-            for (int i =0; i < dateSometime.size(); i++){
+            for (int j = 0; j < dayRoutine.size(); j++){
+                for (int i =0; i < dateSometime.size(); i++){
                  daySometime = new FindDay(dateSometime.get(i));
                  if (timeRoutine.equalsIgnoreCase(timeSometime.get(i))){
-                     if (dayRoutine.equalsIgnoreCase(daySometime.findDayOfWeek())){
+                     if (dayRoutine.get(j).equalsIgnoreCase(daySometime.findDayOfWeek())){
                          testSometimeFile = 0;
                          indexSometime = i;
                          break;
                       } 
-                 }
-                      
+                 }      
             }
-            if (testResultSometime == 0 || testSometimeFile == 0 ){
+            }
+            
+            if (testResultRegularly == 0 || testSometimeFile == 0 ){
                  time.setText("");
-                if (testResultSometime == 0){
+                if (testResultRegularly == 0){
                     msg = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
                     msg.setFont(new Font("tahoma",Font.PLAIN, 20));
                 }
@@ -245,32 +268,27 @@ public class AddRegularly extends javax.swing.JFrame {
                 }       
                 JOptionPane.showMessageDialog(null,msg); 
             } else{
-                String somtimedata = DataSometime(regularly, timeRoutine, dayRoutine);
-                saveRoutineToFile(somtimedata);
+                String regularlyData = DataRegularly(regularly, timeRoutine, dayRoutine);
+                saveRoutineToFile(regularlyData);
             }
-            
-            
-          /*  if (testResultSometime == 0){
-                routine.setText("");
-                time.setText("");
-                JLabel label = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
-                label.setFont(new Font("tahoma",Font.PLAIN, 20));
-                JOptionPane.showMessageDialog(null,label); 
-            } else{
-                String somtimedata = DataSometime(regularly, timeRoutine, dayRoutine);
-                saveRoutineToFile(somtimedata);
-            }*/
         }  
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         routine.setText("");
         time.setText("");
-        day.setSelectedIndex(1);
+        dayList.clearSelection();
     }//GEN-LAST:event_jButton3ActionPerformed
-    public String DataSometime(String event, String time, String data) {
-        return event + "-" + time + "-" + data + "\n";
+
+    public String DataRegularly(String event, String time, ArrayList<String> data) {
+        String dataRegularly = "";
+        for (int i = 0;  i < data.size();  i++){
+            dataRegularly += data.get(i);
+            if (i != data.size() - 1){
+                dataRegularly += ",";
+            }
+        }
+        return event + "-" + time + "-" + dataRegularly + "\n";
     }
     /**
      * @param args the command line arguments
@@ -308,7 +326,7 @@ public class AddRegularly extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> day;
+    private javax.swing.JList<String> dayList;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -316,7 +334,8 @@ public class AddRegularly extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
+    public javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField routine;
     private javax.swing.JTextField time;
     // End of variables declaration//GEN-END:variables

@@ -33,7 +33,7 @@ public class showRegularly {
     
     protected showRegularly(String title) {
         this.title = title;
-        fileName = "C:/Users/SkkN SI/Java project/src/regularlyFile.txt";
+        fileName = "D:\\\\sometimedata.txt"; //C:/Users/SkkN SI/Java project/src/regularlyFile.txt
     }
 
     protected void createAndShowGUI() {
