@@ -7,6 +7,7 @@ package projectacp;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 import java.io.*;
@@ -40,6 +41,7 @@ public class AddRegularly extends javax.swing.JFrame {
      * Creates new form AddRegularly
      */
     public AddRegularly() {
+        setIconImage();
         initComponents();
         routine.setFont(new Font("tahoma",Font.PLAIN, 16));
         time.setFont(new Font("tahoma",Font.PLAIN, 16));
@@ -289,6 +291,9 @@ public class AddRegularly extends javax.swing.JFrame {
             }
         }
         return event + "-" + time + "-" + dataRegularly + "\n";
+    }
+     private void setIconImage() {
+    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png"))); 
     }
     /**
      * @param args the command line arguments

@@ -6,23 +6,47 @@
 package projectacp;
 
 import java.awt.CheckboxGroup;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Lenovo
  */
-public class SettingPage extends javax.swing.JFrame {
-
+public class SettingPage extends javax.swing.JFrame implements ActionListener {
+     protected JFileChooser fc;
+     protected String  nameHeight,nameWeight, bmiString, art, showText, bmiStandard;
+     protected int  nameHeight1, nameWeight1;
+     protected float  bmi,tii,gun;
+     protected File fileOpen;
+     protected int number = 1;
+     protected BufferedReader r;
     /**
      * Creates new form SettingPage
      */
     public SettingPage() {
+        setIconImage();
         initComponents();
-        CheckboxGroup optitinalGroup = new CheckboxGroup();
+        addListeners();
+        showfilebmi();
+        
+        
+       
         
         
     }
-
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,17 +60,17 @@ public class SettingPage extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        height = new javax.swing.JTextField();
+        weight = new javax.swing.JTextField();
+        output = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        standard = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
-        jButton2 = new javax.swing.JButton();
+        savefile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Setting");
@@ -85,29 +109,27 @@ public class SettingPage extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(height, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(39, 39, 39)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel5)
-                        .addGap(67, 67, 67))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(weight, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(standard, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(82, 82, 82)
+                        .addComponent(jLabel5)
+                        .addGap(82, 82, 82)
                         .addComponent(jLabel6)
-                        .addGap(49, 49, 49))))
+                        .addGap(61, 61, 61))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,11 +143,12 @@ public class SettingPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(height, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(weight, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(standard, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -135,8 +158,8 @@ public class SettingPage extends javax.swing.JFrame {
         jCheckBox3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jCheckBox3.setText("Practice sport");
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("save");
+        savefile.setBackground(new java.awt.Color(255, 255, 255));
+        savefile.setText("save");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,7 +179,7 @@ public class SettingPage extends javax.swing.JFrame {
                         .addComponent(jCheckBox3))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(285, 285, 285)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -170,14 +193,108 @@ public class SettingPage extends javax.swing.JFrame {
                     .addComponent(jCheckBox2)
                     .addComponent(jCheckBox3))
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    public void addListeners(){
+    savefile.addActionListener(this);
+    }
+    public void actionPerformed(ActionEvent e){
+    fc = new JFileChooser();
+    nameHeight =  height.getText();
+    nameWeight =  weight.getText();
+    nameHeight1 = Integer.parseInt(nameHeight);
+    nameWeight1 = Integer.parseInt(nameWeight);
+    tii  =  (float) (nameHeight1 * 0.01);
+    gun = tii * tii;
+    bmi = (nameWeight1 / gun );
+    fileOpen = fc.getSelectedFile();
+    if(bmi < 18.5){
+        bmiStandard = "น้ำหนักน้อย / ผอม";
+    }
+    else if (18.5 <= bmi && bmi <= 22.90){
+         bmiStandard = "ปกติ (สุขภาพดี)";
+    }else if(23 <= bmi && bmi <= 24.90){
+         bmiStandard = "ท้วม / โรคอ้วนระดับ 1";
+    }else if (25 <= bmi && bmi <= 29.90){
+         bmiStandard = "อ้วน / โรคอ้วนระดับ 2";
+    }else if (30 < bmi){
+         bmiStandard = "อ้วนมาก / โรคอ้วนระดับ 3 ";
+    }
+    if (e.getSource() == savefile){
+    try
+        {
+           PrintWriter bmiUpload = new PrintWriter("nbproject\\showBMI.txt");
+          
+           bmiUpload.println(nameHeight);
+           bmiUpload.println(nameWeight);
+           bmiUpload.println(String.format("%.2f",bmi));
+           bmiUpload.println(bmiStandard);
+           bmiUpload.close();
+           
+//           FileWriter bmiUpload1 = new FileWriter("D:\\ProjectACP\\New folder\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\BMI.txt",true);
+//           bmiUpload1.write(""+nameHeight+"  "+nameWeight+" "+String.format("%.2f",bmi));
+//           bmiUpload1.write(System.getProperty("line.separator"));
+        
+     
+//           bmiUpload.write(System.getProperty("line.separator"));
+        //   bmiUpload1.close();
+          // JOptionPane.showMessageDialog(null, "Success");
+           setVisible(false);
+           new SettingPage().setVisible(true);
+           
+            
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+    }
+    
+    }
+    public  void  showfilebmi(){
+         String khet = ("nbproject\\showBMI.txt");
+         File file = new File(khet);
+        try{
+             FileReader fr = new FileReader(file);
+             BufferedReader r = new  BufferedReader(fr);
+           
+            while ((showText = r.readLine()) != null){
+                if (number == 1){
+                    height.setText(showText);
+                    height.setFont(new Font("tahoma",Font.PLAIN, 16));
 
+                }else if (number == 2){
+                    weight.setFont(new Font("tahoma",Font.PLAIN, 16));
+                    weight.setText(showText);
+           
+                }
+                else if (number == 3){
+                     output.setFont(new Font("tahoma",Font.PLAIN, 16));
+                     output.setText(showText);
+                    // output.setForeground(Color.BLACK);
+                     output.setEnabled(false);
+                }else if (number == 4){
+                      standard.setFont(new Font("tahoma",Font.PLAIN, 15));
+                      standard.setText(showText);
+                      standard.setEnabled(false);
+                }
+                number++;
+            }
+            r.close();
+            fr.close();
+        } catch(IOException ex){
+            
+        }
+    }
+     private void setIconImage() {
+    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png"))); 
+    }
+  
     /**
      * @param args the command line arguments
      */
@@ -214,7 +331,7 @@ public class SettingPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField height;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
@@ -225,9 +342,9 @@ public class SettingPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField output;
+    private javax.swing.JButton savefile;
+    private javax.swing.JTextField standard;
+    private javax.swing.JTextField weight;
     // End of variables declaration//GEN-END:variables
 }

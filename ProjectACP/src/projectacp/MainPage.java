@@ -6,6 +6,7 @@
 package projectacp;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JColorChooser;
@@ -21,6 +22,7 @@ public class MainPage extends javax.swing.JFrame {
      * Creates new form MainPage
      */
     public MainPage() {
+        setIconImage();
          try{
              File check = new File("D:\\\\sometimedata.txt");
             if (check.exists() == false){
@@ -34,6 +36,9 @@ public class MainPage extends javax.swing.JFrame {
             }
         } catch (IOException e) {}
         initComponents();
+    }
+    private void setIconImage() {
+    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png"))); 
     }
 
     /**
@@ -53,7 +58,7 @@ public class MainPage extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        jCalendar2 = new com.toedter.calendar.JCalendar();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -156,9 +161,6 @@ public class MainPage extends javax.swing.JFrame {
                 .addGap(28, 28, 28))
         );
 
-        jCalendar1.setBackground(new java.awt.Color(255, 255, 255));
-        jCalendar1.setForeground(new java.awt.Color(51, 51, 51));
-
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
         jMenu1.setText("File");
@@ -222,17 +224,18 @@ public class MainPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCalendar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jCalendar2, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -317,7 +320,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private com.toedter.calendar.JCalendar jCalendar1;
+    private com.toedter.calendar.JCalendar jCalendar2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

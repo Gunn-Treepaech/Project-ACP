@@ -6,6 +6,7 @@
 package projectacp;
 
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.*;
 import javax.swing.*;
 import java.nio.charset.*;
@@ -31,6 +32,7 @@ public class AddSometime extends javax.swing.JFrame {
      * Creates new form AddSometime
      */
     public AddSometime() {
+        setIconImage();
         initComponents();
         event.setFont(new Font("tahoma",Font.PLAIN, 16));
         date.setFont(new Font("tahoma",Font.PLAIN, 16));
@@ -263,6 +265,9 @@ public class AddSometime extends javax.swing.JFrame {
  
     public String DataSometime(String event, String time, String data) {
         return event + "-" + time + "-" + data + "\n";
+    }
+     private void setIconImage() {
+    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png"))); 
     }
     /**
      * @param args the command line arguments
