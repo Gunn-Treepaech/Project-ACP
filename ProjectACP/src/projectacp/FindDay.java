@@ -13,6 +13,7 @@ import java.time.LocalDate;
  * @author Lenovo
  */
 public class FindDay {
+
     protected int month, day, year;
 
     public FindDay(String date) {
@@ -21,7 +22,7 @@ public class FindDay {
         this.day = Integer.parseInt(splitDate[0]);
         this.year = Integer.parseInt(splitDate[2]);
     }
-     
+
     public String findDayOfWeek() {
         LocalDate localDate = LocalDate.of(year, month, day);
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
@@ -33,5 +34,5 @@ public class FindDay {
         String day = findDayOfWeek();
         return day;
     }
-    
+
 }

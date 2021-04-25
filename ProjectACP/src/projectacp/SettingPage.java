@@ -25,13 +25,15 @@ import javax.swing.JOptionPane;
  * @author Lenovo
  */
 public class SettingPage extends javax.swing.JFrame implements ActionListener {
-     protected JFileChooser fc;
-     protected String  nameHeight,nameWeight, bmiString, art, showText, bmiStandard;
-     protected int  nameHeight1, nameWeight1;
-     protected float  bmi,tii,gun;
-     protected File fileOpen;
-     protected int number = 1;
-     protected BufferedReader r;
+
+    protected JFileChooser fc;
+    protected String nameHeight, nameWeight, bmiString, art, showText, bmiStandard;
+    protected int nameHeight1, nameWeight1;
+    protected float bmi, tii, gun;
+    protected File fileOpen;
+    protected int number = 1;
+    protected BufferedReader r;
+
     /**
      * Creates new form SettingPage
      */
@@ -40,13 +42,8 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         initComponents();
         addListeners();
         showfilebmi();
-        
-        
-       
-        
-        
     }
-   
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,7 +78,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         jCheckBox1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jCheckBox1.setText("Adjust BMI");
 
-        jPanel1.setBackground(new java.awt.Color(51, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
         jPanel1.setName(""); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -160,6 +157,12 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
 
         savefile.setBackground(new java.awt.Color(255, 255, 255));
         savefile.setText("save");
+        savefile.setFocusable(false);
+        savefile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savefileActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,20 +170,19 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)
-                        .addGap(66, 66, 66)
-                        .addComponent(jCheckBox1)
-                        .addGap(90, 90, 90)
-                        .addComponent(jCheckBox2)
-                        .addGap(82, 82, 82)
-                        .addComponent(jCheckBox3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(285, 285, 285)
-                        .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(66, 66, 66)
+                .addComponent(jCheckBox1)
+                .addGap(90, 90, 90)
+                .addComponent(jCheckBox2)
+                .addGap(82, 82, 82)
+                .addComponent(jCheckBox3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(333, 333, 333))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,109 +194,105 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jCheckBox1)
                     .addComponent(jCheckBox2)
                     .addComponent(jCheckBox3))
-                .addGap(18, 18, 18)
+                .addGap(14, 14, 14)
                 .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    public void addListeners(){
-    savefile.addActionListener(this);
+
+    private void savefileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_savefileActionPerformed
+    public void addListeners() {
+        savefile.addActionListener(this);
     }
-    public void actionPerformed(ActionEvent e){
-    fc = new JFileChooser();
-    nameHeight =  height.getText();
-    nameWeight =  weight.getText();
-    nameHeight1 = Integer.parseInt(nameHeight);
-    nameWeight1 = Integer.parseInt(nameWeight);
-    tii  =  (float) (nameHeight1 * 0.01);
-    gun = tii * tii;
-    bmi = (nameWeight1 / gun );
-    fileOpen = fc.getSelectedFile();
-    if(bmi < 18.5){
-        bmiStandard = "น้ำหนักน้อย / ผอม";
-    }
-    else if (18.5 <= bmi && bmi <= 22.90){
-         bmiStandard = "ปกติ (สุขภาพดี)";
-    }else if(23 <= bmi && bmi <= 24.90){
-         bmiStandard = "ท้วม / โรคอ้วนระดับ 1";
-    }else if (25 <= bmi && bmi <= 29.90){
-         bmiStandard = "อ้วน / โรคอ้วนระดับ 2";
-    }else if (30 < bmi){
-         bmiStandard = "อ้วนมาก / โรคอ้วนระดับ 3 ";
-    }
-    if (e.getSource() == savefile){
-    try
-        {
-           PrintWriter bmiUpload = new PrintWriter("nbproject\\showBMI.txt");
-          
-           bmiUpload.println(nameHeight);
-           bmiUpload.println(nameWeight);
-           bmiUpload.println(String.format("%.2f",bmi));
-           bmiUpload.println(bmiStandard);
-           bmiUpload.close();
-           
+
+    public void actionPerformed(ActionEvent e) {
+        fc = new JFileChooser();
+        nameHeight = height.getText();
+        nameWeight = weight.getText();
+        nameHeight1 = Integer.parseInt(nameHeight);
+        nameWeight1 = Integer.parseInt(nameWeight);
+        tii = (float) (nameHeight1 * 0.01);
+        gun = tii * tii;
+        bmi = (nameWeight1 / gun);
+        fileOpen = fc.getSelectedFile();
+        if (bmi < 18.5) {
+            bmiStandard = "น้ำหนักน้อย / ผอม";
+        } else if (18.5 <= bmi && bmi <= 22.90) {
+            bmiStandard = "ปกติ (สุขภาพดี)";
+        } else if (23 <= bmi && bmi <= 24.90) {
+            bmiStandard = "ท้วม / โรคอ้วนระดับ 1";
+        } else if (25 <= bmi && bmi <= 29.90) {
+            bmiStandard = "อ้วน / โรคอ้วนระดับ 2";
+        } else if (30 < bmi) {
+            bmiStandard = "อ้วนมาก / โรคอ้วนระดับ 3 ";
+        }
+        if (e.getSource() == savefile) {
+            try {
+                PrintWriter bmiUpload = new PrintWriter("D:\\\\showBMI.txt");
+
+                bmiUpload.println(nameHeight);
+                bmiUpload.println(nameWeight);
+                bmiUpload.println(String.format("%.2f", bmi));
+                bmiUpload.println(bmiStandard);
+                bmiUpload.close();
+
 //           FileWriter bmiUpload1 = new FileWriter("D:\\ProjectACP\\New folder\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\BMI.txt",true);
 //           bmiUpload1.write(""+nameHeight+"  "+nameWeight+" "+String.format("%.2f",bmi));
 //           bmiUpload1.write(System.getProperty("line.separator"));
-        
-     
 //           bmiUpload.write(System.getProperty("line.separator"));
-        //   bmiUpload1.close();
-          // JOptionPane.showMessageDialog(null, "Success");
-           setVisible(false);
-           new SettingPage().setVisible(true);
-           
-            
-        }
-        catch(Exception ex)
-        {
-            JOptionPane.showMessageDialog(null, "Error");
-        }
-    }
-    
-    }
-    public  void  showfilebmi(){
-         String khet = ("nbproject\\showBMI.txt");
-         File file = new File(khet);
-        try{
-             FileReader fr = new FileReader(file);
-             BufferedReader r = new  BufferedReader(fr);
-           
-            while ((showText = r.readLine()) != null){
-                if (number == 1){
-                    height.setText(showText);
-                    height.setFont(new Font("tahoma",Font.PLAIN, 16));
-
-                }else if (number == 2){
-                    weight.setFont(new Font("tahoma",Font.PLAIN, 16));
-                    weight.setText(showText);
-           
-                }
-                else if (number == 3){
-                     output.setFont(new Font("tahoma",Font.PLAIN, 16));
-                     output.setText(showText);
-                    // output.setForeground(Color.BLACK);
-                     output.setEnabled(false);
-                }else if (number == 4){
-                      standard.setFont(new Font("tahoma",Font.PLAIN, 15));
-                      standard.setText(showText);
-                      standard.setEnabled(false);
-                }
-                number++;
+                //   bmiUpload1.close();
+                // JOptionPane.showMessageDialog(null, "Success");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error");
             }
-            r.close();
-            fr.close();
-        } catch(IOException ex){
-            
+        }
+
+    }
+
+    public void showfilebmi() {
+        File check = new File("D:\\\\sometimedata.txt");
+        if (check.exists() != false) {
+            String khet = ("D:\\\\showBMI.txt");
+            File file = new File(khet);
+            try {
+
+                FileReader fr = new FileReader(file);
+                BufferedReader r = new BufferedReader(fr);
+                while ((showText = r.readLine()) != null) {
+                    if (number == 1) {
+                        height.setText(showText);
+                        height.setFont(new Font("tahoma", Font.PLAIN, 16));
+                    } else if (number == 2) {
+                        weight.setFont(new Font("tahoma", Font.PLAIN, 16));
+                        weight.setText(showText);
+                    } else if (number == 3) {
+                        output.setFont(new Font("tahoma", Font.PLAIN, 16));
+                        output.setText(showText);
+                        // output.setForeground(Color.BLACK);
+                        output.setEnabled(false);
+                    } else if (number == 4) {
+                        standard.setFont(new Font("tahoma", Font.PLAIN, 15));
+                        standard.setText(showText);
+                        standard.setEnabled(false);
+                    }
+                    number++;
+                }
+                r.close();
+                fr.close();
+            } catch (IOException ex) {
+            }
         }
     }
-     private void setIconImage() {
-    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png"))); 
+
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png")));
     }
-  
+
     /**
      * @param args the command line arguments
      */

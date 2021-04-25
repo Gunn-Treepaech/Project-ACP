@@ -18,48 +18,50 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 /**
  *
  * @author Lenovo
  */
 public class AddRegularly extends javax.swing.JFrame {
-    protected  ArrayList<String> doRegularly = new ArrayList<String>();
-    protected  ArrayList<String> timeRegularly = new ArrayList<String>();
-    protected  ArrayList<String> dayRegularly = new ArrayList<String>();
-    protected  ArrayList<String> userSelec;
+
+    protected ArrayList<String> doRegularly = new ArrayList<String>();
+    protected ArrayList<String> timeRegularly = new ArrayList<String>();
+    protected ArrayList<String> dayRegularly = new ArrayList<String>();
+    protected ArrayList<String> userSelec;
     protected int indexRegularly, indexSometime;
-    protected  ArrayList<String> doSometime = new ArrayList<String>();
-    protected  ArrayList<String> dateSometime = new ArrayList<String>();
-    protected  ArrayList<String> timeSometime = new ArrayList<String>();
-    protected   FindDay daySometime;
-    protected  int testResultRegularly;
+    protected ArrayList<String> doSometime = new ArrayList<String>();
+    protected ArrayList<String> dateSometime = new ArrayList<String>();
+    protected ArrayList<String> timeSometime = new ArrayList<String>();
+    protected FindDay daySometime;
+    protected int testResultRegularly;
     final protected String fileRegularlyAddress = "D:\\\\regularlydata.txt";
-    
+
     protected int testSometimeFile;
     protected JLabel msg;
+
     /**
      * Creates new form AddRegularly
      */
     public AddRegularly() {
         setIconImage();
         initComponents();
-        routine.setFont(new Font("tahoma",Font.PLAIN, 16));
-        time.setFont(new Font("tahoma",Font.PLAIN, 16));
+        routine.setFont(new Font("tahoma", Font.PLAIN, 16));
+        time.setFont(new Font("tahoma", Font.PLAIN, 16));
     }
-    
-    private void saveRoutineToFile(String a){
-         try{
+
+    private void saveRoutineToFile(String a) {
+        try {
             Path file = Paths.get(fileRegularlyAddress);
-            BufferedWriter outputData = Files.newBufferedWriter(file,StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+            BufferedWriter outputData = Files.newBufferedWriter(file, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
             outputData.write(a);
             outputData.close();
-            JOptionPane.showMessageDialog(null,"Comple");
-        }
-        catch(IOException e){
-            JOptionPane.showMessageDialog(null,"No file");
+            JOptionPane.showMessageDialog(null, "Comple");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "No file");
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -214,30 +216,29 @@ public class AddRegularly extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-   /*     userSelec = (ArrayList<String>) dayList.getSelectedValuesList();
+
+        /*     userSelec = (ArrayList<String>) dayList.getSelectedValuesList();
         System.out.println(Arrays.toString(userSelec.toArray()));
         System.out.println(userSelec.get(0));*/
-        
-        if (routine.getText().isEmpty() || time.getText().isEmpty() || dayList.getSelectedValuesList().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Plaese Enter Data");
+        if (routine.getText().isEmpty() || time.getText().isEmpty() || dayList.getSelectedValuesList().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Plaese Enter Data");
         } else {
             String regularly = routine.getText().trim();
             String timeRoutine = time.getText().trim();
             ArrayList<String> dayRoutine = (ArrayList<String>) dayList.getSelectedValuesList(); //day.getSelectedItem().toString();
-            
+
             Check test = new Check();
-            for (int c = 0;  c < dayRoutine.size(); c++){
-                 testResultRegularly = test.CheckwhattodoRegularly(timeRoutine, dayRoutine.get(c));
-                 if (testResultRegularly == 0){
-                      doRegularly = test.getWhatToDo();
-                      indexRegularly = test.getIndex();
-                     break;
-                 }
+            for (int c = 0; c < dayRoutine.size(); c++) {
+                testResultRegularly = test.CheckwhattodoRegularly(timeRoutine, dayRoutine.get(c));
+                if (testResultRegularly == 0) {
+                    doRegularly = test.getWhatToDo();
+                    indexRegularly = test.getIndex();
+                    break;
+                }
             }
-          
+
             test.setFileName("D:\\\\sometimedata.txt");
             test.fileToArray();
             doSometime = test.getWhatToDo();
@@ -245,35 +246,34 @@ public class AddRegularly extends javax.swing.JFrame {
             timeSometime = test.getTimeToDo();
 
             testSometimeFile = 1;
-            for (int j = 0; j < dayRoutine.size(); j++){
-                for (int i =0; i < dateSometime.size(); i++){
-                 daySometime = new FindDay(dateSometime.get(i));
-                 if (timeRoutine.equalsIgnoreCase(timeSometime.get(i))){
-                     if (dayRoutine.get(j).equalsIgnoreCase(daySometime.findDayOfWeek())){
-                         testSometimeFile = 0;
-                         indexSometime = i;
-                         break;
-                      } 
-                 }      
-            }
-            }
-            
-            if (testResultRegularly == 0 || testSometimeFile == 0 ){
-                 time.setText("");
-                if (testResultRegularly == 0){
-                    msg = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
-                    msg.setFont(new Font("tahoma",Font.PLAIN, 20));
+            for (int j = 0; j < dayRoutine.size(); j++) {
+                for (int i = 0; i < dateSometime.size(); i++) {
+                    daySometime = new FindDay(dateSometime.get(i));
+                    if (timeRoutine.equalsIgnoreCase(timeSometime.get(i))) {
+                        if (dayRoutine.get(j).equalsIgnoreCase(daySometime.findDayOfWeek())) {
+                            testSometimeFile = 0;
+                            indexSometime = i;
+                            break;
+                        }
+                    }
                 }
-                else if (testSometimeFile == 0){
+            }
+
+            if (testResultRegularly == 0 || testSometimeFile == 0) {
+                time.setText("");
+                if (testResultRegularly == 0) {
+                    msg = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
+                    msg.setFont(new Font("tahoma", Font.PLAIN, 20));
+                } else if (testSometimeFile == 0) {
                     msg = new JLabel("There is something to do: \n " + doSometime.get(indexSometime));
-                    msg.setFont(new Font("tahoma",Font.PLAIN, 20));
-                }       
-                JOptionPane.showMessageDialog(null,msg); 
-            } else{
+                    msg.setFont(new Font("tahoma", Font.PLAIN, 20));
+                }
+                JOptionPane.showMessageDialog(null, msg);
+            } else {
                 String regularlyData = DataRegularly(regularly, timeRoutine, dayRoutine);
                 saveRoutineToFile(regularlyData);
             }
-        }  
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -284,17 +284,19 @@ public class AddRegularly extends javax.swing.JFrame {
 
     public String DataRegularly(String event, String time, ArrayList<String> data) {
         String dataRegularly = "";
-        for (int i = 0;  i < data.size();  i++){
+        for (int i = 0; i < data.size(); i++) {
             dataRegularly += data.get(i);
-            if (i != data.size() - 1){
+            if (i != data.size() - 1) {
                 dataRegularly += ",";
             }
         }
         return event + "-" + time + "-" + dataRegularly + "\n";
     }
-     private void setIconImage() {
-    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png"))); 
+
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png")));
     }
+
     /**
      * @param args the command line arguments
      */

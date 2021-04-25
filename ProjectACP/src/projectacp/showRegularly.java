@@ -20,6 +20,7 @@ import javax.swing.*;
  * @author SkkN SI
  */
 public class showRegularly {
+
     protected String newline = "\n";
     protected JPanel northPanel;
     protected JFrame window;
@@ -30,7 +31,7 @@ public class showRegularly {
     protected Font serif_30, serif_20;
     protected JScrollPane wordSp;
     protected String fileName;
-    
+
     protected showRegularly(String title) {
         this.title = title;
         fileName = "D:\\\\sometimedata.txt"; //C:/Users/SkkN SI/Java project/src/regularlyFile.txt
@@ -47,14 +48,14 @@ public class showRegularly {
         window = new JFrame(title);
         window.setLayout(new BorderLayout());
         eventLabel = new JLabel("Regularly");
-        wordTextArea = new JTextArea(5,0);
+        wordTextArea = new JTextArea(5, 0);
         northPanel = new JPanel();
 
         eventLabel.setFont(serif_30);
         northPanel.add(eventLabel);
         northPanel.setBackground(Color.CYAN);
         wordTextArea.setEditable(false);
-        
+
         try {
             Path file = Paths.get(fileName);
             BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8);
@@ -75,6 +76,7 @@ public class showRegularly {
         window.add(northPanel, BorderLayout.CENTER);
         window.add(wordTextArea, BorderLayout.SOUTH);
     }
+
     protected void setFrameFeatures() {
         window.pack();
         window.setLocationRelativeTo(null); // ตั้งให้ตำแหน่งอยู่ตรงกลาง
@@ -98,6 +100,7 @@ public class showRegularly {
             System.out.println("IOException " + e.getMessage());
         }
     }
+
     protected void writingFile() {
         try {
             Path file = Paths.get(fileName);

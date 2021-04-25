@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * @author Lenovo
  */
 public class AddSometime extends javax.swing.JFrame {
+
     protected ArrayList<String> doSometime = new ArrayList<String>();
     protected ArrayList<String> timeDoSometime = new ArrayList<String>();
     protected ArrayList<String> dateDoSometime = new ArrayList<String>();
@@ -28,29 +29,30 @@ public class AddSometime extends javax.swing.JFrame {
     protected JLabel msg;
     protected int indexSometime, indexregularly;
     final protected String fileSometimeAddress = "D:\\\\sometimedata.txt";
+
     /**
      * Creates new form AddSometime
      */
     public AddSometime() {
         setIconImage();
         initComponents();
-        event.setFont(new Font("tahoma",Font.PLAIN, 16));
-        date.setFont(new Font("tahoma",Font.PLAIN, 16));
-        time.setFont(new Font("tahoma",Font.PLAIN, 16));
+        event.setFont(new Font("tahoma", Font.PLAIN, 16));
+        date.setFont(new Font("tahoma", Font.PLAIN, 16));
+        time.setFont(new Font("tahoma", Font.PLAIN, 16));
     }
-    public void saveDataToFile(String a){
-        try{
+
+    public void saveDataToFile(String a) {
+        try {
             Path file = Paths.get(fileSometimeAddress);
-            BufferedWriter outputData = Files.newBufferedWriter(file,StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+            BufferedWriter outputData = Files.newBufferedWriter(file, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
             outputData.write(a);
             outputData.close();
-            JOptionPane.showMessageDialog(null,"Comple");
-        }
-        catch(IOException e){
-            JOptionPane.showMessageDialog(null,"No file");
+            JOptionPane.showMessageDialog(null, "Comple");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "No file");
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -210,10 +212,10 @@ public class AddSometime extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (event.getText().isEmpty() || time.getText().isEmpty() || date.getText().isEmpty()){ 
-            JOptionPane.showMessageDialog(null,"Please Enter Data");
-        } else{
-             try {
+        if (event.getText().isEmpty() || time.getText().isEmpty() || date.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Enter Data");
+        } else {
+            try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dateFormatter = LocalDate.parse(date.getText().trim(), formatter);
                 ChackSaveToFile();
@@ -221,54 +223,55 @@ public class AddSometime extends javax.swing.JFrame {
                 String msg = "Please enter date in the format dd/MM/yyyy such as 20/06/2020";
                 JOptionPane.showMessageDialog(null, msg);
             }
-        } 
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
-    
-     public void ChackSaveToFile(){
-            String dataEvent = event.getText().trim();
-            String dataTime = time.getText().trim();
-            String dataDate = date.getText().trim();
-            
-            Check testResult = new Check();
-            int testResultSometime = testResult.CheckwhattodoSometime(dataTime, dataDate);
-            doSometime = testResult.getWhatToDo();
-            indexSometime = testResult.getIndex();
-            FindDay ojectFindDay = new FindDay(dataDate);
-            String day = ojectFindDay.findDayOfWeek();
-            
-            int testResultRegularly = testResult.CheckwhattodoRegularly(dataTime, day);
-            doRegularly = testResult.getWhatToDo();
-            indexregularly = testResult.getIndex();
-            if (testResultSometime == 0 ||testResultRegularly == 0 ){
-                 time.setText("");
-                 date.setText("");
-                if (testResultSometime == 0){
-                    msg = new JLabel("There is something to do:  \n" + doSometime.get(indexSometime));
-                    msg.setFont(new Font("tahoma",Font.PLAIN, 20));
-                }
-                else if(testResultRegularly == 0){
-                    msg = new JLabel("There is something to do:  \n" + doRegularly.get(indexregularly));
-                    msg.setFont(new Font("tahoma",Font.PLAIN, 20));
-                }
-                JOptionPane.showMessageDialog(null, msg); 
-            } else{
-                String somtimedata = DataSometime(dataEvent, dataTime, dataDate);
-                saveDataToFile(somtimedata);
+
+    public void ChackSaveToFile() {
+        String dataEvent = event.getText().trim();
+        String dataTime = time.getText().trim();
+        String dataDate = date.getText().trim();
+
+        Check testResult = new Check();
+        int testResultSometime = testResult.CheckwhattodoSometime(dataTime, dataDate);
+        doSometime = testResult.getWhatToDo();
+        indexSometime = testResult.getIndex();
+        FindDay ojectFindDay = new FindDay(dataDate);
+        String day = ojectFindDay.findDayOfWeek();
+
+        int testResultRegularly = testResult.CheckwhattodoRegularly(dataTime, day);
+        doRegularly = testResult.getWhatToDo();
+        indexregularly = testResult.getIndex();
+        if (testResultSometime == 0 || testResultRegularly == 0) {
+            time.setText("");
+            date.setText("");
+            if (testResultSometime == 0) {
+                msg = new JLabel("There is something to do:  \n" + doSometime.get(indexSometime));
+                msg.setFont(new Font("tahoma", Font.PLAIN, 20));
+            } else if (testResultRegularly == 0) {
+                msg = new JLabel("There is something to do:  \n" + doRegularly.get(indexregularly));
+                msg.setFont(new Font("tahoma", Font.PLAIN, 20));
             }
-     } 
-    
+            JOptionPane.showMessageDialog(null, msg);
+        } else {
+            String somtimedata = DataSometime(dataEvent, dataTime, dataDate);
+            saveDataToFile(somtimedata);
+        }
+    }
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         event.setText("");
         time.setText("");
         date.setText("");
     }//GEN-LAST:event_jButton3ActionPerformed
- 
+
     public String DataSometime(String event, String time, String data) {
         return event + "-" + time + "-" + data + "\n";
     }
-     private void setIconImage() {
-    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png"))); 
+
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png")));
     }
+
     /**
      * @param args the command line arguments
      */
