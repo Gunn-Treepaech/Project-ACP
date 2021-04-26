@@ -13,6 +13,7 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -47,7 +48,7 @@ public class AddSometime extends javax.swing.JFrame {
             BufferedWriter outputData = Files.newBufferedWriter(file, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
             outputData.write(a);
             outputData.close();
-            JOptionPane.showMessageDialog(null, "Comple");
+            JOptionPane.showMessageDialog(null, "Save successfully");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "No file");
         }
@@ -107,7 +108,7 @@ public class AddSometime extends javax.swing.JFrame {
         date.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("save");
+        jButton2.setText("Save");
         jButton2.setFocusPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,7 +126,7 @@ public class AddSometime extends javax.swing.JFrame {
         jLabel3.setText("*Date");
 
         jLabel4.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel4.setText("( *E.g 13.10 )");
+        jLabel4.setText("( *E.g 13:10 )");
         jLabel4.setToolTipText("");
 
         jLabel5.setForeground(new java.awt.Color(255, 0, 51));
@@ -133,7 +134,7 @@ public class AddSometime extends javax.swing.JFrame {
         jLabel5.setToolTipText("");
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("cancel");
+        jButton3.setText("Cancel");
         jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,7 +219,13 @@ public class AddSometime extends javax.swing.JFrame {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dateFormatter = LocalDate.parse(date.getText().trim(), formatter);
-                ChackSaveToFile();
+                try {
+                    LocalTime.parse(time.getText().trim());
+                    ChackSaveToFileSometime();
+                } catch (DateTimeException e) {
+                    String msg = "Please enter time in the format hours:minutes as 13:10";
+                    JOptionPane.showMessageDialog(null, msg);
+                }
             } catch (DateTimeException e) {
                 String msg = "Please enter date in the format dd/MM/yyyy such as 20/06/2020";
                 JOptionPane.showMessageDialog(null, msg);
@@ -226,7 +233,7 @@ public class AddSometime extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public void ChackSaveToFile() {
+    public void ChackSaveToFileSometime() {
         String dataEvent = event.getText().trim();
         String dataTime = time.getText().trim();
         String dataDate = date.getText().trim();

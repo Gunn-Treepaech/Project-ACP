@@ -16,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.DateTimeException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -56,7 +58,7 @@ public class AddRegularly extends javax.swing.JFrame {
             BufferedWriter outputData = Files.newBufferedWriter(file, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
             outputData.write(a);
             outputData.close();
-            JOptionPane.showMessageDialog(null, "Comple");
+            JOptionPane.showMessageDialog(null, "Save successfully.");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "No file");
         }
@@ -115,7 +117,7 @@ public class AddRegularly extends javax.swing.JFrame {
         time.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("save");
+        jButton1.setText("Save");
         jButton1.setFocusPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,10 +135,10 @@ public class AddRegularly extends javax.swing.JFrame {
         jLabel3.setText("*Day");
 
         jLabel4.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel4.setText("( *E.g 13.10 )");
+        jLabel4.setText("( *E.g 13:10 )");
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("cancel");
+        jButton3.setText("Cancel");
         jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,59 +224,69 @@ public class AddRegularly extends javax.swing.JFrame {
         /*     userSelec = (ArrayList<String>) dayList.getSelectedValuesList();
         System.out.println(Arrays.toString(userSelec.toArray()));
         System.out.println(userSelec.get(0));*/
-        if (routine.getText().isEmpty() || time.getText().isEmpty() || dayList.getSelectedValuesList().isEmpty()) {
+        if (routine.getText().trim().isEmpty() || time.getText().trim().isEmpty() || dayList.getSelectedValuesList().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Plaese Enter Data");
         } else {
-            String regularly = routine.getText().trim();
-            String timeRoutine = time.getText().trim();
-            ArrayList<String> dayRoutine = (ArrayList<String>) dayList.getSelectedValuesList(); //day.getSelectedItem().toString();
-
-            Check test = new Check();
-            for (int c = 0; c < dayRoutine.size(); c++) {
-                testResultRegularly = test.CheckwhattodoRegularly(timeRoutine, dayRoutine.get(c));
-                if (testResultRegularly == 0) {
-                    doRegularly = test.getWhatToDo();
-                    indexRegularly = test.getIndex();
-                    break;
-                }
-            }
-
-            test.setFileName("D:\\\\sometimedata.txt");
-            test.fileToArray();
-            doSometime = test.getWhatToDo();
-            dateSometime = test.getDateToDo();
-            timeSometime = test.getTimeToDo();
-
-            testSometimeFile = 1;
-            for (int j = 0; j < dayRoutine.size(); j++) {
-                for (int i = 0; i < dateSometime.size(); i++) {
-                    daySometime = new FindDay(dateSometime.get(i));
-                    if (timeRoutine.equalsIgnoreCase(timeSometime.get(i))) {
-                        if (dayRoutine.get(j).equalsIgnoreCase(daySometime.findDayOfWeek())) {
-                            testSometimeFile = 0;
-                            indexSometime = i;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (testResultRegularly == 0 || testSometimeFile == 0) {
-                time.setText("");
-                if (testResultRegularly == 0) {
-                    msg = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
-                    msg.setFont(new Font("tahoma", Font.PLAIN, 20));
-                } else if (testSometimeFile == 0) {
-                    msg = new JLabel("There is something to do: \n " + doSometime.get(indexSometime));
-                    msg.setFont(new Font("tahoma", Font.PLAIN, 20));
-                }
+            try {
+                LocalTime.parse(time.getText().trim());
+                ChackSaveToFileRegularly();
+            } catch (DateTimeException e) {
+                String msg = "Please enter time in the format hours:minutes as 13:10";
                 JOptionPane.showMessageDialog(null, msg);
-            } else {
-                String regularlyData = DataRegularly(regularly, timeRoutine, dayRoutine);
-                saveRoutineToFile(regularlyData);
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void ChackSaveToFileRegularly() {
+        String regularly = routine.getText().trim();
+        String timeRoutine = time.getText().trim();
+        ArrayList<String> dayRoutine = (ArrayList<String>) dayList.getSelectedValuesList();
+
+        Check test = new Check();
+        for (int c = 0; c < dayRoutine.size(); c++) {
+            testResultRegularly = test.CheckwhattodoRegularly(timeRoutine, dayRoutine.get(c));
+            if (testResultRegularly == 0) {
+                doRegularly = test.getWhatToDo();
+                indexRegularly = test.getIndex();
+                break;
+            }
+        }
+
+        test.setFileName("D:\\\\sometimedata.txt");
+        test.fileToArray();
+        doSometime = test.getWhatToDo();
+        dateSometime = test.getDateToDo();
+        timeSometime = test.getTimeToDo();
+
+        testSometimeFile = 1;
+        for (int j = 0; j < dayRoutine.size(); j++) {
+            for (int i = 0; i < dateSometime.size(); i++) {
+                daySometime = new FindDay(dateSometime.get(i));
+                if (timeRoutine.equalsIgnoreCase(timeSometime.get(i))) {
+                    if (dayRoutine.get(j).equalsIgnoreCase(daySometime.findDayOfWeek())) {
+                        testSometimeFile = 0;
+                        indexSometime = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (testResultRegularly == 0 || testSometimeFile == 0) {
+            time.setText("");
+            if (testResultRegularly == 0) {
+                msg = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
+                msg.setFont(new Font("tahoma", Font.PLAIN, 20));
+            } else if (testSometimeFile == 0) {
+                msg = new JLabel("There is something to do: \n " + doSometime.get(indexSometime));
+                msg.setFont(new Font("tahoma", Font.PLAIN, 20));
+            }
+            JOptionPane.showMessageDialog(null, msg);
+        } else {
+            String regularlyData = DataRegularly(regularly, timeRoutine, dayRoutine);
+            saveRoutineToFile(regularlyData);
+        }
+    }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         routine.setText("");
