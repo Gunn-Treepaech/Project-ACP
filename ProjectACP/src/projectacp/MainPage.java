@@ -7,8 +7,14 @@ package projectacp;
 
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 
@@ -17,7 +23,11 @@ import javax.swing.JPanel;
  * @author Lenovo
  */
 public class MainPage extends javax.swing.JFrame {
-
+    protected String adjustBMIFileName = "D:\\\\adjustBMI.txt";
+    protected String increaseReadingFileName = "D:\\\\increaseReading.txt";
+    protected String practiceSportFileName = "D:\\\\practiceSport.txt";
+    protected String line;
+   
     /**
      * Creates new form MainPage
      */
@@ -38,6 +48,11 @@ public class MainPage extends javax.swing.JFrame {
         } catch (IOException e) {
         }
         initComponents();
+        
+        adjustBMIChecker();
+        increaseReadingChecker();
+        practiceSportChecker();
+
     }
 
     private void setIconImage() {
@@ -59,7 +74,7 @@ public class MainPage extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jCalendar2 = new com.toedter.calendar.JCalendar();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -90,8 +105,13 @@ public class MainPage extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton4.setText("All event");
+        jButton4.setText("Events");
         jButton4.setFocusPainted(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("Show What to Do");
@@ -103,29 +123,30 @@ public class MainPage extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
+                        .addGap(100, 100, 100)
                         .addComponent(jButton3)
-                        .addGap(117, 117, 117)
+                        .addGap(69, 69, 69)
                         .addComponent(jButton4))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel1)))
+                        .addGap(134, 134, 134)
+                        .addComponent(jLabel3)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 61, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(45, 45, 45))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -199,15 +220,14 @@ public class MainPage extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCalendar2, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
+                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE))
         );
 
         pack();
@@ -236,10 +256,53 @@ public class MainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        showRegularly showingWindow = new showRegularly("Show  activities");
-        showingWindow.createAndShowGUI();
+        showToday showRegularly = new showToday("Showing activities Today");
+        showRegularly.createAndShowGUI();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        showEvent showEvent = new showEvent("Showing your Events");
+        showEvent.createAndShowGUI();
+    }//GEN-LAST:event_jButton4ActionPerformed
+    protected void adjustBMIChecker() {
+        try {
+            Path file1 = Paths.get(adjustBMIFileName); // sometimedata.txt
+            BufferedReader reader = Files.newBufferedReader(file1, StandardCharsets.UTF_8);
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("true")) {
+                    new AdjustBMI();
+                }
+            }
+        } catch (IOException e) {
+        }
+    }
+    
+    protected void increaseReadingChecker() {
+        try {
+            Path file1 = Paths.get(increaseReadingFileName); // sometimedata.txt
+            BufferedReader reader = Files.newBufferedReader(file1, StandardCharsets.UTF_8);
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("true")) {
+                    new IncreaseReading();
+                }
+            }
+        } catch (IOException e) {
+        }
+    }
+    
+    protected void practiceSportChecker() {
+        try {
+            Path file1 = Paths.get(practiceSportFileName); // sometimedata.txt
+            BufferedReader reader = Files.newBufferedReader(file1, StandardCharsets.UTF_8);
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("true")) {
+                    new PracticeSport();
+                }
+            }
+        } catch (IOException e) {
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -278,7 +341,7 @@ public class MainPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private com.toedter.calendar.JCalendar jCalendar2;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;

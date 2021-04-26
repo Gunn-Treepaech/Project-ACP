@@ -17,6 +17,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -33,6 +37,12 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
     protected File fileOpen;
     protected int number = 1;
     protected BufferedReader r;
+    protected String adjustBMIFileName = "D:\\\\adjustBMI.txt";
+    protected String increaseReadingFileName = "D:\\\\increaseReading.txt";
+    protected String practiceSportFileName = "D:\\\\practiceSport.txt";
+    protected StringBuffer wordBuffer;
+    protected String newline = "\n";
+    protected String line;
 
     /**
      * Creates new form SettingPage
@@ -42,6 +52,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         initComponents();
         addListeners();
         showfilebmi();
+        extraActivitiesChecker();
     }
 
     /**
@@ -208,6 +219,9 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_savefileActionPerformed
     public void addListeners() {
         savefile.addActionListener(this);
+        jCheckBox1.addActionListener(this);
+        jCheckBox2.addActionListener(this);
+        jCheckBox2.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -247,6 +261,54 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
 //           bmiUpload.write(System.getProperty("line.separator"));
                 //   bmiUpload1.close();
                 // JOptionPane.showMessageDialog(null, "Success");
+                FileWriter fileWriter1 = new FileWriter(adjustBMIFileName);
+                FileWriter fileWriter2 = new FileWriter(increaseReadingFileName);
+                FileWriter fileWriter3 = new FileWriter(practiceSportFileName);
+                wordBuffer = new StringBuffer();
+                int checker = 0;
+                
+                if (jCheckBox1.isSelected()) {
+                    fileWriter1.write("true");
+                    fileWriter1.write(newline);
+                    fileWriter1.write("3");
+                    checker++;
+                    wordBuffer.append("Exercise 3 days a week.");
+                    wordBuffer.append(newline);
+                            
+                } else {
+                    fileWriter1.write("flase");
+                }
+                
+                if (jCheckBox2.isSelected()) {
+                    fileWriter2.write("true");
+                    fileWriter2.write(newline);
+                    fileWriter2.write("3");
+                    checker++;
+                    wordBuffer.append("Read books 3 times a week.");
+                    wordBuffer.append(newline);
+                } else {
+                    fileWriter2.write("flase");
+                }
+                
+                if (jCheckBox3.isSelected()) {
+                    fileWriter3.write("true");
+                    fileWriter3.write(newline);
+                    fileWriter3.write("3");
+                    checker++;
+                    wordBuffer.append("Practice sport 3 times a week.");
+                    wordBuffer.append(newline);
+                } else {
+                    fileWriter3.write("flase");
+                }
+                
+                if (checker != 0) {
+                    JOptionPane.showMessageDialog(this,wordBuffer.toString());
+                }
+                
+                fileWriter1.close();
+                fileWriter2.close();
+                fileWriter3.close();
+                
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error");
             }
@@ -292,7 +354,38 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
     private void setIconImage() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png")));
     }
-
+    
+    private void extraActivitiesChecker(){
+        try {
+            Path file1 = Paths.get(adjustBMIFileName);
+            BufferedReader reader1 = Files.newBufferedReader(file1, StandardCharsets.UTF_8);
+            while ((line = reader1.readLine()) != null) {
+                if (line.equals("true")) {
+                    jCheckBox1.setSelected(true);
+                }
+            }
+            reader1.close();
+            
+            Path file2 = Paths.get(increaseReadingFileName);
+            BufferedReader reader2 = Files.newBufferedReader(file2, StandardCharsets.UTF_8);
+            while ((line = reader2.readLine()) != null) {
+                if (line.equals("true")) {
+                    jCheckBox2.setSelected(true);
+                }
+            }
+            reader2.close();
+            
+            Path file3 = Paths.get(practiceSportFileName);
+            BufferedReader reader3 = Files.newBufferedReader(file3, StandardCharsets.UTF_8);
+            while ((line = reader3.readLine()) != null) {
+                if (line.equals("true")) {
+                    jCheckBox3.setSelected(true);
+                }
+            }
+            reader3.close();
+        } catch (IOException e) {
+        }
+    }
     /**
      * @param args the command line arguments
      */

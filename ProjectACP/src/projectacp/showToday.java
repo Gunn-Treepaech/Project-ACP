@@ -5,10 +5,9 @@
  */
 package projectacp;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,14 +16,12 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
-public class showEvent {
+public class showToday {
+
     protected String newline = "\n";
     protected JPanel northPanel;
     protected JFrame window;
@@ -34,12 +31,15 @@ public class showEvent {
     protected String title;
     protected Font serif_30, serif_20;
     protected JScrollPane wordSp;
-    protected String fileName;
-    
-    public showEvent(String title){
+    protected String fileName1;
+    protected String fileName2;
+
+    protected showToday(String title) {
         this.title = title;
-        fileName = "D:\\\\sometimedata.txt";
+        fileName1 = "D:\\\\sometimedata.txt";
+        fileName2 = "D:\\\\regularlydata.txt";
     }
+
     protected void createAndShowGUI() {
         addComponents();
         setFrameFeatures();
@@ -50,7 +50,7 @@ public class showEvent {
         serif_20 = new Font("Serif", Font.PLAIN, 20);
         window = new JFrame(title);
         window.setLayout(new BorderLayout());
-        eventLabel = new JLabel("Events");
+        eventLabel = new JLabel("Activities today");
         wordTextArea = new JTextArea(5, 0);
         northPanel = new JPanel();
 
@@ -63,39 +63,44 @@ public class showEvent {
             //Local date instance
             LocalDate localDate = LocalDate.now(); 
             
-            Path file1 = Paths.get(fileName); // sometimedata.txt
-            BufferedReader reader = Files.newBufferedReader(file1, StandardCharsets.UTF_8);
+            Path file1 = Paths.get(fileName1); // sometimedata.txt
+            BufferedReader reader1 = Files.newBufferedReader(file1, StandardCharsets.UTF_8);
             //Create formatter
-            DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter FOMATTER1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             //Get formatted String            
-            String dayFormated = FOMATTER.format(localDate);
-            String[] arrOfToday = dayFormated.split("/");
-            int todayYear = Integer.parseInt(arrOfToday[2]);  
-            int todayMonth = Integer.parseInt(arrOfToday[1]);
-            int todayDay = Integer.parseInt(arrOfToday[0]);
+            String dayFormated1 = FOMATTER1.format(localDate);
             
-            ArrayList<String> availableLineArrayList = new ArrayList<String>();
+            Path file2 = Paths.get(fileName2); // regularlydata.txt
+            BufferedReader reader2 = Files.newBufferedReader(file2, StandardCharsets.UTF_8);
+            //Create formatter
+            DateTimeFormatter FOMATTER2 = DateTimeFormatter.ofPattern("EEEE");
+            //Get formatted String            
+            String dayFormated2 = FOMATTER2.format(localDate);
             
-            while ((line = reader.readLine()) != null) { // sometimedata.txt
+            ArrayList<String> allLineArrayList = new ArrayList<String>();
+            while ((line = reader1.readLine()) != null) { // sometimedata.txt
                 String[] arrOfLine = line.split("-");
-                String[] arrOfDate = arrOfLine[2].split("/");
-                int year = Integer.parseInt(arrOfDate[2]);  
-                int month = Integer.parseInt(arrOfDate[1]);
-                int day = Integer.parseInt(arrOfDate[0]);
-                if (year >= todayYear && month >= todayMonth && day >= todayDay) {
-                    availableLineArrayList.add(arrOfLine[2] + " at " + arrOfLine[1] + ". You have to do " + arrOfLine[0] + ".");
-                }
-            }   
-            Collections.sort(availableLineArrayList);
-            
-            int order = 1; 
-            for (int i =0; i < availableLineArrayList.size(); ++i) {
-                wordTextArea.append(order + ". Date " + availableLineArrayList.get(i));
-                wordTextArea.append(newline);
-                ++order;
+                allLineArrayList.add(arrOfLine[1] + "-" + arrOfLine[0] + "-" + arrOfLine[2]);
             }
-            reader.close();
+            while ((line = reader2.readLine()) != null) { // regularlydata.txt
+                String[] arrOfLine = line.split("-");
+                allLineArrayList.add(arrOfLine[1] + "-" + arrOfLine[0] + "-" + arrOfLine[2]);
+            }
+            Collections.sort(allLineArrayList);
+
+            int order = 1; 
+            for (int i =0; i < allLineArrayList.size(); ++i) {
+                String[] arrOfLine = allLineArrayList.get(i).split("-");
+                if (arrOfLine[2].equals(dayFormated1) || arrOfLine[2].equals(dayFormated2)) {
+                    wordTextArea.append(order + ". At " + arrOfLine[0] + " you have to do " + arrOfLine[1] + ".");
+                    wordTextArea.append(newline);
+                    ++order;
+                }
+            }
             
+            reader1.close();
+            reader2.close();
+
         } catch (IOException e) {
             System.out.println("IOException " + e.getMessage());
         }
