@@ -33,7 +33,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
     protected JFileChooser fc;
     protected String nameHeight, nameWeight, bmiString, art, showText, bmiStandard;
     protected int nameHeight1, nameWeight1;
-    protected float bmi, tii, gun;
+    protected float bmi, nameHeight2, allHeight;
     protected File fileOpen;
     protected int number = 1;
     protected BufferedReader r;
@@ -70,12 +70,12 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         jLabel1 = new javax.swing.JLabel();
         height = new javax.swing.JTextField();
         weight = new javax.swing.JTextField();
-        output = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        standard = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        output = new javax.swing.JTextField();
+        standard = new javax.swing.JTextField();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
         savefile = new javax.swing.JButton();
@@ -107,6 +107,17 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Explanation");
 
+        output.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        output.setEnabled(false);
+        output.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outputActionPerformed(evt);
+            }
+        });
+
+        standard.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        standard.setEnabled(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -117,27 +128,27 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(height, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(height, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(24, 24, 24)))
+                        .addGap(57, 57, 57)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(weight, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel4)))
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(weight, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                        .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(standard, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(74, 74, 74)
                         .addComponent(jLabel5)
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel6)
-                        .addGap(53, 53, 53))))
+                        .addGap(121, 121, 121)
+                        .addComponent(jLabel6))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(standard, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,15 +160,14 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(height, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
                         .addComponent(weight, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(standard, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(standard)
+                    .addComponent(output))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jCheckBox2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -199,7 +209,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGap(18, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jCheckBox1)
@@ -217,6 +227,10 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
     private void savefileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefileActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_savefileActionPerformed
+
+    private void outputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_outputActionPerformed
     public void addListeners() {
         savefile.addActionListener(this);
         jCheckBox1.addActionListener(this);
@@ -230,9 +244,9 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         nameWeight = weight.getText();
         nameHeight1 = Integer.parseInt(nameHeight);
         nameWeight1 = Integer.parseInt(nameWeight);
-        tii = (float) (nameHeight1 * 0.01);
-        gun = tii * tii;
-        bmi = (nameWeight1 / gun);
+        nameHeight2 = (float) (nameHeight1 * 0.01);
+        allHeight = nameHeight2 * nameHeight2;
+        bmi = (nameWeight1 / allHeight);
         fileOpen = fc.getSelectedFile();
         if (bmi < 18.5) {
             bmiStandard = "น้ำหนักน้อย / ผอม";
@@ -247,7 +261,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         }
         if (e.getSource() == savefile) {
             try {
-                PrintWriter bmiUpload = new PrintWriter("D:\\\\showBMI.txt");
+                PrintWriter bmiUpload = new PrintWriter("D:\\ProjectACP\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\showBMI.txt");
 
                 bmiUpload.println(nameHeight);
                 bmiUpload.println(nameWeight);
@@ -255,12 +269,6 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                 bmiUpload.println(bmiStandard);
                 bmiUpload.close();
 
-//           FileWriter bmiUpload1 = new FileWriter("D:\\ProjectACP\\New folder\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\BMI.txt",true);
-//           bmiUpload1.write(""+nameHeight+"  "+nameWeight+" "+String.format("%.2f",bmi));
-//           bmiUpload1.write(System.getProperty("line.separator"));
-//           bmiUpload.write(System.getProperty("line.separator"));
-                //   bmiUpload1.close();
-                // JOptionPane.showMessageDialog(null, "Success");
                 FileWriter fileWriter1 = new FileWriter(adjustBMIFileName);
                 FileWriter fileWriter2 = new FileWriter(increaseReadingFileName);
                 FileWriter fileWriter3 = new FileWriter(practiceSportFileName);
@@ -312,14 +320,16 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error");
             }
+            showfilebmi();
         }
+        
 
     }
 
     public void showfilebmi() {
         File check = new File("D:\\\\sometimedata.txt");
         if (check.exists() != false) {
-            String khet = ("D:\\\\showBMI.txt");
+            String khet = ("D:\\ProjectACP\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\showBMI.txt");
             File file = new File(khet);
             try {
 
@@ -335,10 +345,9 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                     } else if (number == 3) {
                         output.setFont(new Font("tahoma", Font.PLAIN, 16));
                         output.setText(showText);
-                        // output.setForeground(Color.BLACK);
                         output.setEnabled(false);
                     } else if (number == 4) {
-                        standard.setFont(new Font("tahoma", Font.PLAIN, 15));
+                        standard.setFont(new Font("tahoma", Font.PLAIN, 16));
                         standard.setText(showText);
                         standard.setEnabled(false);
                     }
@@ -349,7 +358,8 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
             } catch (IOException ex) {
             }
         }
-    }
+        
+   }
 
     private void setIconImage() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png")));
@@ -385,6 +395,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
             reader3.close();
         } catch (IOException e) {
         }
+        showfilebmi();
     }
     /**
      * @param args the command line arguments
