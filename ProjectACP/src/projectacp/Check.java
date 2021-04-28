@@ -48,7 +48,7 @@ public class Check {
         timeToDo = new ArrayList<String>();
         dateOrDayToDo = new ArrayList<String>();
         try {
-            File dataSomeTime = new File(fileName); // "D:\\\\sometimedata.txt"
+            File dataSomeTime = new File(fileName); 
             Scanner dataReader = new Scanner(dataSomeTime);
             while (dataReader.hasNextLine()) {
                 String[] a;
@@ -74,6 +74,7 @@ public class Check {
                 if (checkDate.equalsIgnoreCase(dateSomeTime)) {
                     checkTimeAndDateSometime = 0;
                     index = i;
+                    break;
                 } else {
                     checkTimeAndDateSometime = 1;
                 }
@@ -92,7 +93,6 @@ public class Check {
                 String[] day = dateOrDayToDo.get(j).split(",");
                 for (int i = 0; i < day.length; i++) {
                     String dayRegulatly = day[i];
-                    System.out.println(dayRegulatly);
                     if (checkDay.equalsIgnoreCase(dayRegulatly)) {
                         checkTimeAndDayRegularly = 0;
                         index = j;

@@ -273,7 +273,6 @@ public class AddRegularly extends javax.swing.JFrame {
         }
 
         if (testResultRegularly == 0 || testSometimeFile == 0) {
-            time.setText("");
             if (testResultRegularly == 0) {
                 msg = new JLabel("There is something to do: \n " + doRegularly.get(indexRegularly));
                 msg.setFont(new Font("tahoma", Font.PLAIN, 20));

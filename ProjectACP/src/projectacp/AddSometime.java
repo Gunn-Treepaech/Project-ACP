@@ -249,8 +249,6 @@ public class AddSometime extends javax.swing.JFrame {
         doRegularly = testResult.getWhatToDo();
         indexregularly = testResult.getIndex();
         if (testResultSometime == 0 || testResultRegularly == 0) {
-            time.setText("");
-            date.setText("");
             if (testResultSometime == 0) {
                 msg = new JLabel("There is something to do:  \n" + doSometime.get(indexSometime));
                 msg.setFont(new Font("tahoma", Font.PLAIN, 20));
