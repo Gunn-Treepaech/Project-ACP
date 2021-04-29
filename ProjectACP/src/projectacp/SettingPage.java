@@ -191,35 +191,35 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(66, 66, 66)
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(150, 150, 150))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addGap(66, 66, 66)
+                        .addComponent(jCheckBox1)
+                        .addGap(99, 99, 99)
                         .addComponent(jCheckBox2)
-                        .addGap(115, 115, 115)))
-                .addComponent(jCheckBox3)
-                .addGap(72, 72, 72))
+                        .addGap(69, 69, 69)
+                        .addComponent(jCheckBox3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(333, 333, 333)
+                        .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 27, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jCheckBox1)
                     .addComponent(jCheckBox2)
                     .addComponent(jCheckBox3))
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(savefile, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -249,6 +249,9 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         nameHeight2 = (float) (nameHeight1 * 0.01);
         allHeight = nameHeight2 * nameHeight2;
         bmi = (nameWeight1 / allHeight);
+        String bmiTxt = String.format("%.2f", bmi);
+        output.setText(bmiTxt);
+        output.setFont(new Font("tahoma", Font.PLAIN, 16));
         fileOpen = fc.getSelectedFile();
         if (bmi < 18.5) {
             bmiStandard = "น้ำหนักน้อย / ผอม";
@@ -261,9 +264,11 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         } else if (30 < bmi) {
             bmiStandard = "อ้วนมาก / โรคอ้วนระดับ 3 ";
         }
+        standard.setText(bmiStandard);
+        standard.setFont(new Font("tahoma", Font.PLAIN, 16));
         if (e.getSource() == savefile) {
             try {
-                PrintWriter bmiUpload = new PrintWriter("D:\\ProjectACP\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\showBMI.txt");
+                PrintWriter bmiUpload = new PrintWriter("D:\\showBMI.txt");
 
                 bmiUpload.println(nameHeight);
                 bmiUpload.println(nameWeight);
@@ -329,9 +334,9 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
     }
 
     public void showfilebmi() {
-        File check = new File("D:\\\\sometimedata.txt");
+        File check = new File("D:\\showBMI.txt");
         if (check.exists() != false) {
-            String khet = ("D:\\ProjectACP\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\showBMI.txt");
+            String khet = ("D:\\showBMI.txt");
             File file = new File(khet);
             try {
 
