@@ -1,0 +1,2 @@
+Desktop Application of this program is in :
+ProjectACP/dist/HealthManageCalendar.exe
