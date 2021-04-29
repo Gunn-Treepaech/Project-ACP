@@ -91,10 +91,13 @@ public class showToday {
             int order = 1; 
             for (int i =0; i < allLineArrayList.size(); ++i) {
                 String[] arrOfLine = allLineArrayList.get(i).split("-");
-                if (arrOfLine[2].equals(dayFormated1) || arrOfLine[2].equals(dayFormated2)) {
-                    wordTextArea.append(order + ". At " + arrOfLine[0] + " you have to do " + arrOfLine[1] + ".");
+                String[] arrOfDayName = arrOfLine[2].split(",");
+                for (int j = 0; j < arrOfDayName.length; j++) {
+                  if (arrOfDayName[j].equals(dayFormated1) || arrOfDayName[j].equals(dayFormated2)) {
+                    wordTextArea.append("  " + order + ". At " + arrOfLine[0] + " you have to do " + arrOfLine[1] + ".  ");
                     wordTextArea.append(newline);
                     ++order;
+                }  
                 }
             }
             

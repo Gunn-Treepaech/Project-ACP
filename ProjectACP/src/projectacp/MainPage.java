@@ -134,7 +134,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(jButton4))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(168, 168, 168)
-                        .addComponent(jLabel3)))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(

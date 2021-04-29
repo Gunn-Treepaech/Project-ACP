@@ -83,14 +83,14 @@ public class showEvent {
                 int month = Integer.parseInt(arrOfDate[1]);
                 int day = Integer.parseInt(arrOfDate[0]);
                 if (year >= todayYear && month >= todayMonth && day >= todayDay) {
-                    availableLineArrayList.add(arrOfLine[2] + " at " + arrOfLine[1] + ". You have to do " + arrOfLine[0] + ".");
+                    availableLineArrayList.add(arrOfLine[2] + " at " + arrOfLine[1] + ". You have to do " + arrOfLine[0] + ".  ");
                 }
             }   
             Collections.sort(availableLineArrayList);
             
             int order = 1; 
             for (int i =0; i < availableLineArrayList.size(); ++i) {
-                wordTextArea.append(order + ". Date " + availableLineArrayList.get(i));
+                wordTextArea.append("  " + order + ". Date " + availableLineArrayList.get(i));
                 wordTextArea.append(newline);
                 ++order;
             }
