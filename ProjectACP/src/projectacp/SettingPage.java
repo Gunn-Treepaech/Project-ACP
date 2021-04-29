@@ -261,6 +261,9 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         } else if (30 < bmi) {
             bmiStandard = "อ้วนมาก / โรคอ้วนระดับ 3 ";
         }
+        output.setText(String.format("%.2f", bmi));
+        standard.setFont(new Font("tahoma", Font.PLAIN, 16));
+        standard.setText(bmiStandard);
         if (e.getSource() == savefile) {
             try {
                 PrintWriter bmiUpload = new PrintWriter("D:\\\\showBMI.txt");
@@ -276,7 +279,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                 FileWriter fileWriter3 = new FileWriter(practiceSportFileName);
                 wordBuffer = new StringBuffer();
                 int checker = 0;
-                
+
                 if (jCheckBox1.isSelected()) {
                     fileWriter1.write("true");
                     fileWriter1.write(newline);
@@ -284,11 +287,11 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                     checker++;
                     wordBuffer.append("Exercise 3 days a week.");
                     wordBuffer.append(newline);
-                            
+
                 } else {
                     fileWriter1.write("flase");
                 }
-                
+
                 if (jCheckBox2.isSelected()) {
                     fileWriter2.write("true");
                     fileWriter2.write(newline);
@@ -299,7 +302,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                 } else {
                     fileWriter2.write("flase");
                 }
-                
+
                 if (jCheckBox3.isSelected()) {
                     fileWriter3.write("true");
                     fileWriter3.write(newline);
@@ -310,21 +313,20 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                 } else {
                     fileWriter3.write("flase");
                 }
-                
+
                 if (checker != 0) {
-                    JOptionPane.showMessageDialog(this,wordBuffer.toString());
+                    JOptionPane.showMessageDialog(this, wordBuffer.toString());
                 }
-                
+
                 fileWriter1.close();
                 fileWriter2.close();
                 fileWriter3.close();
-                
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error");
             }
             showfilebmi();
         }
-        
 
     }
 
@@ -360,14 +362,14 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
             } catch (IOException ex) {
             }
         }
-        
-   }
+
+    }
 
     private void setIconImage() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("1.png")));
     }
-    
-    private void extraActivitiesChecker(){
+
+    private void extraActivitiesChecker() {
         try {
             Path file1 = Paths.get(adjustBMIFileName);
             BufferedReader reader1 = Files.newBufferedReader(file1, StandardCharsets.UTF_8);
@@ -377,7 +379,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                 }
             }
             reader1.close();
-            
+
             Path file2 = Paths.get(increaseReadingFileName);
             BufferedReader reader2 = Files.newBufferedReader(file2, StandardCharsets.UTF_8);
             while ((line = reader2.readLine()) != null) {
@@ -386,7 +388,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
                 }
             }
             reader2.close();
-            
+
             Path file3 = Paths.get(practiceSportFileName);
             BufferedReader reader3 = Files.newBufferedReader(file3, StandardCharsets.UTF_8);
             while ((line = reader3.readLine()) != null) {
@@ -399,6 +401,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         }
         showfilebmi();
     }
+
     /**
      * @param args the command line arguments
      */
