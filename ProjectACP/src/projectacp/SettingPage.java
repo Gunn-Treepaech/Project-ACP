@@ -263,7 +263,7 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
         }
         if (e.getSource() == savefile) {
             try {
-                PrintWriter bmiUpload = new PrintWriter("D:\\ProjectACP\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\showBMI.txt");
+                PrintWriter bmiUpload = new PrintWriter("D:\\\\showBMI.txt");
 
                 bmiUpload.println(nameHeight);
                 bmiUpload.println(nameWeight);
@@ -329,9 +329,9 @@ public class SettingPage extends javax.swing.JFrame implements ActionListener {
     }
 
     public void showfilebmi() {
-        File check = new File("D:\\\\sometimedata.txt");
+        File check = new File("D:\\\\showBMI.txt");
         if (check.exists() != false) {
-            String khet = ("D:\\ProjectACP\\Project-ACP-master\\Project-ACP-master\\ProjectACP\\nbproject\\showBMI.txt");
+            String khet = ("D:\\\\showBMI.txt");
             File file = new File(khet);
             try {
 
